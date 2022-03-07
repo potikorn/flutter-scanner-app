@@ -31,7 +31,7 @@ class TextDetectorPainter extends CustomPainter {
       final ParagraphBuilder builder = ParagraphBuilder(
         ParagraphStyle(
             textAlign: TextAlign.left,
-            fontSize: 16,
+            fontSize: 12,
             textDirection: TextDirection.ltr),
       );
       builder.pushStyle(

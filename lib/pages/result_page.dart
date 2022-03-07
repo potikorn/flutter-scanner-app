@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:scanner_app/controllers/text_detector.dart';
@@ -29,8 +30,9 @@ class _ResultPageState extends State<ResultPage> {
   Size? _imageSize;
 
   void detectText() async {
-    final InputImage inputImage =
-        InputImage.fromFile(File(widget.imageFile.path));
+    final fixedImage =
+        await FlutterExifRotation.rotateImage(path: widget.imageFile.path);
+    final InputImage inputImage = InputImage.fromFile(fixedImage);
     textDetectorController
         .detectIngredientsAndNutrition(inputImage)
         .then((results) {
@@ -38,7 +40,7 @@ class _ResultPageState extends State<ResultPage> {
         matchIngredients = results.matched;
       });
     });
-    final imgSize = await _getImageSize(File(widget.imageFile.path));
+    final imgSize = await _getImageSize(fixedImage);
     drawPainter(inputImage, imgSize);
     debugPrint('============');
   }
